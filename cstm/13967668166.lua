@@ -6591,7 +6591,7 @@ g.car_listing_gui = g.car_listing_gui or function()
     Title.Size = UDim2.new(1, -40, 0, 40)
     Title.Position = UDim2.new(0, 10, 0, 0)
     Title.BackgroundTransparency = 1
-    Title.Text = "Made by: "..tostring(Script_Creator)
+    Title.Text = "Made by: "Zami
     Title.Font = Enum.Font.GothamBold
     Title.TextSize = 18
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -10673,7 +10673,7 @@ g.CreateCreditsLabel = g.CreateCreditsLabel or function()
     flowrgb("PrefixCreditsLabelConn", 1, label, true)
     local parts = {tostring(g.Script_Version)}
     if holiday ~= "" then table.insert(parts, holiday) end
-    table.insert(parts, "Made By: " .. tostring(Script_Creator))
+    table.insert(parts, "Made By: "Zami
     if masked_flames_hub_server_ID then table.insert(parts, "Your Flames-Hub UUID: " .. tostring(masked_flames_hub_server_ID)) end
     label.Text = table.concat(parts, " | ")
     label.Font = Enum.Font.GothamBold
@@ -10693,7 +10693,7 @@ g.CreateCreditsLabel = g.CreateCreditsLabel or function()
     if g._PrefixUpdateConnection then g._PrefixUpdateConnection:Disconnect() end
     local parts = {tostring(g.Script_Version)}
     if holiday ~= "" then table.insert(parts, holiday) end
-    table.insert(parts, "Made By: " .. tostring(Script_Creator))
+    table.insert(parts, "Made By: "Zami
     if masked_flames_hub_server_ID then table.insert(parts, "Your Flames-Hub UUID: " .. tostring(masked_flames_hub_server_ID)) end
     label.Text = table.concat(parts, " | ")
 end
@@ -13366,7 +13366,7 @@ g.annoyance_GUI = function()
     local Title = Instance.new("TextLabel")
     Title.Size = UDim2.new(1, -35, 1, 0)
     Title.Position = UDim2.new(0, 10, 0, 0)
-    Title.Text = "Annoy / Group Spam Menu | Made By: "..tostring(Script_Creator).."."
+    Title.Text = "Annoy / Group Spam Menu | Made By: "Zami"."
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.BackgroundTransparency = 1
     Title.TextXAlignment = Enum.TextXAlignment.Left
