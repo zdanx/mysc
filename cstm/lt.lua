@@ -14,6 +14,7 @@ end
 local g = getgenv()
 local Raw_Version = "V9.2.3"
 getgenv().Script_Version = tostring(Raw_Version).."-LifeHub"
+local Script_Creator = "Zami"
 getgenv().Script_Creator = "Zami"
 local Players = g.Players or cloneref and cloneref(game:GetService("Players")) or game:GetService("Players")
 local localPlayer = Players.LocalPlayer or Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
