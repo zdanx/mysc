@@ -24,10 +24,23 @@ g.colors = g.colors or {
 }
 g.LocalPlayer = g.LocalPlayer or localPlayer
 if not g.GlobalEnvironmentFramework_Initialized then
-   loadstring(game:HttpGet("https://pastebin.com/raw/T25mDhBZ"))()
-   wait(0.1)
-   g.GlobalEnvironmentFramework_Initialized = true
+    loadstring(game:HttpGet("https://pastebin.com/raw/T25mDhBZ"))()
+    wait(0.1)
+    g.GlobalEnvironmentFramework_Initialized = true
 end
+
+-- Jalankan pembersihan watermark di sini
+task.spawn(function()
+    task.wait(1) -- Beri jeda 1 detik agar UI Pastebin selesai ter-render penuh
+    pcall(function()
+        for _, v in pairs(game:GetService("CoreGui"):GetDescendants()) do
+            if v:IsA("TextLabel") and v.Text:find("LifeHub") then
+                v.Parent.Visible = false
+            end
+        end
+    end)
+end)
+
 wait(0.25)
 if not g.LifeTogether_Actual_Flames_Hub_Running_Functioning_Currently_On_Client then
     if g.notify then
