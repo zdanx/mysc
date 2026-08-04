@@ -21,18 +21,6 @@ local localPlayer = Players.LocalPlayer or Players:GetPropertyChangedSignal("Loc
 g.Keybind_Input_Disabled_For_Mini_Game = g.Keybind_Input_Disabled_For_Mini_Game or false
 g.colors = g.colors or {
     Color3.fromRGB(255,255,255),
-    Color3.fromRGB(128,128,128),
-    Color3.fromRGB(0,0,0),
-    Color3.fromRGB(0,0,255),
-    Color3.fromRGB(0,255,0),
-    Color3.fromRGB(0,255,255),
-    Color3.fromRGB(255,165,0),
-    Color3.fromRGB(139,69,19),
-    Color3.fromRGB(255,255,0),
-    Color3.fromRGB(50,205,50),
-    Color3.fromRGB(255,0,0),
-    Color3.fromRGB(255,155,172),
-    Color3.fromRGB(128,0,128),
 }
 g.LocalPlayer = g.LocalPlayer or localPlayer
 if not g.GlobalEnvironmentFramework_Initialized then
