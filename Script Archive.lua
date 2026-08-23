@@ -163,36 +163,6 @@ TikTok : @muhzdann
 ========================================]])
     return
 end
-    
-    -- ==========================================
-    -- LANJUTKAN SCRIPT RAYFIELD UI UTAMA DI SINI
-    -- ==========================================
-    print("Script Utama Dijalankan...")
-
-else
-    -- Jika Gagal (Merah Kalem)
-    StatusText.TextColor3 = Color3.fromRGB(255, 90, 90)
-    StatusText.Text = "Username tidak terdaftar."
-    
-    task.wait(1.5)
-    
-    FadeUI(false, function()
-        ScreenGui:Destroy()
-    end)
-    
-    -- Pesan Kick Profesional
-    LocalPlayer:Kick([[
-========================================
-[ SCRIPT ARCHIVE - ACCESS DENIED ]
-========================================
-Status : Tidak terdaftar di database
-Akun   : ]] .. LocalPlayer.Name .. [[
-
-Silahkan hubungi pembuat untuk akses:
-TikTok : @muhzdann
-========================================]])
-    return
-end
 
 -- ==========================================
 -- LANJUTAN SCRIPT RAYFIELD UI ANDA
@@ -235,33 +205,6 @@ Rayfield:Notify({
    Image = 13047715178,
 })
 
-local Button = MainTab:CreateButton({
-   Name = "Infinite Jump Toggle",
-   Callback = function()
-_G.infinjump = not _G.infinjump
-
-if _G.infinJumpStarted == nil then
-   _G.infinJumpStarted = true
-   
-   game.StarterGui:SetCore("SendNotification", {Title="Youtube Hub"; Text="Infinite Jump Activated!"; Duration=5;})
-
-   local m = LocalPlayer:GetMouse()
-   m.KeyDown:connect(function(k)
-      if _G.infinjump then
-         if k:byte() == 32 then
-         local humanoid = LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
-         if humanoid then
-             humanoid:ChangeState('Jumping')
-             wait()
-             humanoid:ChangeState('Seated')
-         end
-         end
-      end
-   end)
-end
-   end,
-})
-
 local InfYieldButton = MainTab:CreateButton({
    Name = "Infinite Yield",
    Callback = function()
@@ -270,7 +213,7 @@ local InfYieldButton = MainTab:CreateButton({
          Title = "Infinite Yield",
          Content = "Script Infinite Yield berhasil diaktifkan!",
          Duration = 4,
-         Image = 13047715178,
+         --Image = 13047715178,
       })
    end,
 })
@@ -278,11 +221,25 @@ local InfYieldButton = MainTab:CreateButton({
 local CrypticButton = MainTab:CreateButton({
    Name = "Cryptic",
    Callback = function()
+      loadstring(game:HttpGet('https://raw.githubusercontent.com/OnlyCryptic/Cryptic/main/main.lua'))()
       Rayfield:Notify({
          Title = "Cryptic",
-         Content = "Fitur Cryptic dipanggil!",
+         Content = "Script Cryptic berhasil diaktifkan!",
          Duration = 4,
-         Image = 13047715178,
+         --Image = 13047715178,
+      })
+   end,
+})
+
+local FlamesButton = MainTab:CreateButton({
+   Name = "Flames Hub",
+   Callback = function()
+      loadstring(game:HttpGet('https://raw.githubusercontent.com/zdanx/flames-hub-2/refs/heads/main/Experiences/13967668166.lua'))()
+      Rayfield:Notify({
+         Title = "Flames Hub",
+         Content = "Script Flames Hub berhasil diaktifkan!",
+         Duration = 4,
+         --Image = 13047715178,
       })
    end,
 })
