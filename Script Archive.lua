@@ -1,5 +1,5 @@
 -- ==========================================
--- SISTEM WHITELIST & SMOOTH FADE UI
+-- SISTEM WHITELIST & SMOOTH FADE UI (CLEAN)
 -- ==========================================
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
@@ -10,7 +10,7 @@ local LocalPlayer = Players.LocalPlayer
 -- URL database JSON Anda di GitHub
 local WhitelistURL = "https://raw.githubusercontent.com/zdanx/mysc/refs/heads/main/data.json"
 
--- 1. Membuat Tampilan Custom UI yang Minimalis & Estetis
+-- 1. Membuat Tampilan Custom UI (Tanpa Background Hitam)
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ScriptArchiveWhitelist"
 
@@ -23,21 +23,14 @@ else
     ScreenGui.Parent = CoreGui
 end
 
--- Background Transparan untuk Efek Fade
-local Backdrop = Instance.new("Frame")
-Backdrop.Size = UDim2.new(1, 0, 1, 0)
-Backdrop.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Backdrop.BackgroundTransparency = 1 -- Mulai dari transparan penuh (fade-in nanti)
-Backdrop.Parent = ScreenGui
-
--- Kotak Utama
+-- Kotak Utama (Transparan penuh di awal untuk efek Fade In)
 local MainBox = Instance.new("Frame")
 MainBox.Size = UDim2.new(0, 320, 0, 140)
 MainBox.Position = UDim2.new(0.5, -160, 0.5, -70)
 MainBox.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-MainBox.BackgroundTransparency = 1 -- Mulai transparan
+MainBox.BackgroundTransparency = 1 
 MainBox.BorderSizePixel = 0
-MainBox.Parent = Backdrop
+MainBox.Parent = ScreenGui
 
 -- Sudut Melengkung Halus
 local UICorner = Instance.new("UICorner")
@@ -48,7 +41,7 @@ UICorner.Parent = MainBox
 local UIStroke = Instance.new("UIStroke")
 UIStroke.Color = Color3.fromRGB(45, 45, 55)
 UIStroke.Thickness = 1.5
-UIStroke.Transparency = 1 -- Mulai transparan
+UIStroke.Transparency = 1 
 UIStroke.Parent = MainBox
 
 -- Judul
@@ -58,7 +51,7 @@ TitleLabel.Position = UDim2.new(0, 0, 0, 20)
 TitleLabel.BackgroundTransparency = 1
 TitleLabel.Text = "SCRIPT ARCHIVE"
 TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
-TitleLabel.TextTransparency = 1 -- Mulai transparan
+TitleLabel.TextTransparency = 1 
 TitleLabel.TextSize = 16
 TitleLabel.Font = Enum.Font.GothamBold
 TitleLabel.Parent = MainBox
@@ -70,25 +63,22 @@ StatusText.Position = UDim2.new(0, 20, 0, 65)
 StatusText.BackgroundTransparency = 1
 StatusText.Text = "Memeriksa database..."
 StatusText.TextColor3 = Color3.fromRGB(200, 200, 200)
-StatusText.TextTransparency = 1 -- Mulai transparan
+StatusText.TextTransparency = 1 
 StatusText.TextSize = 13
 StatusText.Font = Enum.Font.Gotham
 StatusText.Parent = MainBox
 
 
--- Fungsi Animasi Mulus (Fade In / Fade Out)
+-- Fungsi Animasi Mulus (Fade In / Fade Out) Tanpa Backdrop
 local function FadeUI(isEntering, callback)
     local info = TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
     
-    local targetBackdropAlpha = isEntering and 0.4 or 1
-    local targetBoxAlpha = isEntering and 0 or 1
-    local targetTextAlpha = isEntering and 0 or 1
+    local targetAlpha = isEntering and 0 or 1
     
-    TweenService:Create(Backdrop, info, {BackgroundTransparency = targetBackdropAlpha}):Play()
-    TweenService:Create(MainBox, info, {BackgroundTransparency = targetBoxAlpha}):Play()
-    TweenService:Create(UIStroke, info, {Transparency = targetBoxAlpha}):Play()
-    TweenService:Create(TitleLabel, info, {TextTransparency = targetTextAlpha}):Play()
-    TweenService:Create(StatusText, info, {TextTransparency = targetTextAlpha}):Play()
+    TweenService:Create(MainBox, info, {BackgroundTransparency = targetAlpha}):Play()
+    TweenService:Create(UIStroke, info, {Transparency = targetAlpha}):Play()
+    TweenService:Create(TitleLabel, info, {TextTransparency = targetAlpha}):Play()
+    TweenService:Create(StatusText, info, {TextTransparency = targetAlpha}):Play()
     
     task.wait(0.4)
     if callback then callback() end
@@ -129,7 +119,7 @@ local function CheckWhitelist()
     return isAllowed
 end
 
--- 3. Eksekusi & Hasil dengan Transisi Mulus Memudar
+-- 3. Eksekusi & Hasil dengan Transisi Memudar Mulus
 local isValid = CheckWhitelist()
 
 if isValid then
@@ -143,6 +133,36 @@ if isValid then
     FadeUI(false, function()
         ScreenGui:Destroy()
     end)
+    
+    -- ==========================================
+    -- LANJUTKAN SCRIPT RAYFIELD UI UTAMA DI SINI
+    -- ==========================================
+    print("Script Utama Dijalankan...")
+
+else
+    -- Jika Gagal (Merah Kalem)
+    StatusText.TextColor3 = Color3.fromRGB(255, 90, 90)
+    StatusText.Text = "Username tidak terdaftar."
+    
+    task.wait(1.5)
+    
+    FadeUI(false, function()
+        ScreenGui:Destroy()
+    end)
+    
+    -- Pesan Kick Profesional
+    LocalPlayer:Kick([[
+========================================
+[ SCRIPT ARCHIVE - ACCESS DENIED ]
+========================================
+Status : Tidak terdaftar di database
+Akun   : ]] .. LocalPlayer.Name .. [[
+
+Silahkan hubungi pembuat untuk akses:
+TikTok : @muhzdann
+========================================]])
+    return
+end
     
     -- ==========================================
     -- LANJUTKAN SCRIPT RAYFIELD UI UTAMA DI SINI
