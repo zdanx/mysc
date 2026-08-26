@@ -13,13 +13,13 @@
       "Password": "2077sapp",
       "ScriptName": "Infinite Yield",
       "ScriptURL": "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"
-      },
+        },
       {
       "Password": "2077sapp",
       "ScriptName": "Siexther",
       "ScriptURL": "https://siexther-evo.my.id/loader"
-      }
-    ],
+        }
+          ],
 
     "miekwetiau012": {
       "Password": "2077sapp",
@@ -27,4 +27,4 @@
       "ScriptURL": "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"
 }
   }
-}
+    }
