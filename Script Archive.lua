@@ -8,7 +8,8 @@ local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
 
 -- URL database JSON Anda di GitHub
-local WhitelistURL = "https://raw.githubusercontent.com/zdanx/mysc/refs/heads/main/data.json"
+-- ori local WhitelistURL = "https://raw.githubusercontent.com/Zami-X/Script-Archive/refs/heads/main/data.json"
+local WhitelistURL = "https://raw.githubusercontent.com/zdanx/mysc/refs/heads/main/cstm/data.json"
 
 -- 1. Membuat Tampilan Custom UI (Tanpa Background Hitam)
 local ScreenGui = Instance.new("ScreenGui")
@@ -152,12 +153,11 @@ else
     
     -- Pesan Kick Profesional
     LocalPlayer:Kick([[
-========================================
-[ SCRIPT ARCHIVE - ACCESS DENIED ]
-========================================
-Status : Tidak terdaftar di database
+--========================================
+--[ SCRIPT ARCHIVE - ACCESS DENIED ]
+--========================================
+--Status : Tidak terdaftar di database
 Akun   : ]] .. LocalPlayer.Name .. [[
-
 Silahkan hubungi pembuat untuk akses:
 TikTok : @muhzdann
 ========================================]])
@@ -170,9 +170,9 @@ end
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/zdanx/mysc/refs/heads/main/cstm/source.lua'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "🔥 Script Archive | by Zami 🔫",
-   LoadingTitle = "Life Together test",
-   LoadingSubtitle = "by Zami",
+   Name = "🔥 Script Archive",
+   LoadingTitle = "Life Together",
+   LoadingSubtitle = "Script Archive by Zami",
    ConfigurationSaving = {
       Enabled = false,
       FolderName = nil, 
@@ -195,58 +195,217 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-local MainTab = Window:CreateTab("🏠 Home", nil) 
-local MainSection = MainTab:CreateSection("Main")
+-- ==========================================
+-- TAB MAIN (FREE SCRIPT DINAMIS)
+-- ==========================================
+local MainTab = Window:CreateTab("🏠 Home (Free Script)", nil) 
+local MainSection = MainTab:CreateSection("Free Scripts")
 
 Rayfield:Notify({
-   Title = "Akses Diterima!",
-   Content = "Selamat datang, " .. LocalPlayer.Name .. "!",
-   Duration = 5,
-   Image = 13047715178,
+    Title = "Akses Diterima!",
+    Content = "Selamat datang, " .. LocalPlayer.Name .. "!",
+    Duration = 5,
+    Image = 13047715178,
 })
 
-local InfYieldButton = MainTab:CreateButton({
-   Name = "Infinite Yield",
+-- Ambil data FreeScripts dari URL JSON
+local freeSuccess, freeResult = pcall(function()
+    local response = game:HttpGet(WhitelistURL)
+    return HttpService:JSONDecode(response)
+end)
+
+if freeSuccess and freeResult and freeResult.FreeScripts then
+    for _, scriptData in ipairs(freeResult.FreeScripts) do
+        local scriptTitle = scriptData.ScriptName or "Free Script"
+        local scriptURL = scriptData.ScriptURL
+
+        MainTab:CreateButton({
+            Name = scriptTitle,
+            Callback = function()
+                local execSuccess = pcall(function()
+                    loadstring(game:HttpGet(scriptURL))()
+                end)
+                
+                if execSuccess then
+                    Rayfield:Notify({
+                        Title = scriptTitle,
+                        Content = "Script " .. scriptTitle .. " berhasil diaktifkan!",
+                        Duration = 4,
+                    })
+                else
+                    Rayfield:Notify({
+                        Title = "Error Script",
+                        Content = "Gagal menjalankan " .. scriptTitle,
+                        Duration = 4,
+                    })
+                end
+            end,
+        })
+    end
+else
+    Rayfield:Notify({
+        Title = "Gagal Memuat",
+        Content = "Gagal mengambil daftar Free Script dari database.",
+        Duration = 5,
+    })
+end
+
+-- ==========================================
+-- VIP SCRIPT TAB (MULTIPLE DYNAMIC SCRIPTS)
+-- ==========================================
+local VIPTab = Window:CreateTab("💎 VIP Script", nil)
+
+local isUnlocked = false
+local LoginSection = VIPTab:CreateSection("Verifikasi Akses VIP")
+
+local inputPassword = ""
+local PasswordInput = VIPTab:CreateInput({
+   Name = "Masukkan Password VIP Anda",
+   PlaceholderText = "Ketik password dari Zami...",
+   RemoveTextAfterFocusLost = false,
+   Callback = function(text)
+      inputPassword = text
+   end,
+})
+
+local VIPContentSection = VIPTab:CreateSection("Script VIP Anda")
+
+local UnlockButton = VIPTab:CreateButton({
+   Name = "🔓 Unlock VIP Script",
    Callback = function()
-      loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+      if isUnlocked then return end
+
+      local success, result = pcall(function()
+          local response = game:HttpGet(WhitelistURL)
+          return HttpService:JSONDecode(response)
+      end)
+
+      if not success or not result.VIPScripts then
+          Rayfield:Notify({
+             Title = "Error",
+             Content = "Gagal memverifikasi database.",
+             Duration = 4,
+          })
+          return
+      end
+
+      local currentUsername = string.lower(LocalPlayer.Name)
+      local foundData = nil
+
+      for user, data in pairs(result.VIPScripts) do
+          if string.lower(user) == currentUsername then
+              foundData = data
+              break
+          end
+      end
+
+      if foundData then
+          -- Cek apakah datanya berupa banyak script (Array) atau 1 script (Object tunggal)
+          local firstData = foundData[1] or foundData
+          local passwordValid = (inputPassword == firstData.Password)
+
+          if passwordValid then
+              isUnlocked = true
+              
+              Rayfield:Notify({
+                 Title = "Berhasil Unlocked!",
+                 Content = "Password benar. Semua script VIP Anda dimuat.",
+                 Duration = 5,
+              })
+              
+              -- Sembunyikan form input dan tombol unlock
+              pcall(function()
+                  PasswordInput.Visible = false
+                  UnlockButton.Visible = false
+                  LoginSection.Visible = false
+              end)
+
+              -- Fungsi untuk meload daftar script (mendukung format banyak script atau 1 script)
+              local function loadScriptList(listData)
+                  if type(listData[1]) == "table" then
+                      -- Jika bentuknya array (banyak script)
+                      for _, scriptInfo in ipairs(listData) do
+                          local scriptTitle = scriptInfo.ScriptName or "Custom VIP Script"
+                          local scriptURL = scriptInfo.ScriptURL
+                          
+                          VIPTab:CreateButton({
+                             Name = "🚀 " .. scriptTitle,
+                             Callback = function()
+                                local execSuccess = pcall(function()
+                                    loadstring(game:HttpGet(scriptURL))()
+                                end)
+                                
+                                if execSuccess then
+                                    Rayfield:Notify({
+                                       Title = "Berhasil",
+                                       Content = scriptTitle .. " berhasil dieksekusi!",
+                                       Duration = 4,
+                                    })
+                                else
+                                    Rayfield:Notify({
+                                       Title = "Error Script",
+                                       Content = "Gagal mengeksekusi link script.",
+                                       Duration = 4,
+                                    })
+                                end
+                             end,
+                          })
+                      end
+                  else
+                      -- Jika formatnya hanya 1 script (objek tunggal)
+                      local scriptTitle = listData.ScriptName or "Custom VIP Script"
+                      local scriptURL = listData.ScriptURL
+                      
+                      VIPTab:CreateButton({
+                         Name = "🚀 " .. scriptTitle,
+                         Callback = function()
+                            local execSuccess = pcall(function()
+                                loadstring(game:HttpGet(scriptURL))()
+                            end)
+                            
+                            if execSuccess then
+                                Rayfield:Notify({
+                                   Title = "Berhasil",
+                                   Content = scriptTitle .. " berhasil dieksekusi!",
+                                   Duration = 4,
+                                })
+                            end
+                         end,
+                      })
+                  end
+              end
+
+              -- Jalankan pemanggilan tombol script
+              loadScriptList(foundData)
+              
+          else
+              Rayfield:Notify({
+                 Title = "Akses Ditolak",
+                 Content = "Password salah!",
+                 Duration = 4,
+              })
+          end
+      else
+          Rayfield:Notify({
+             Title = "Tidak Terdaftar",
+             Content = "Akun Anda tidak memiliki data VIP Script.",
+             Duration = 4,
+          })
+      end
+   end,
+})
+
+VIPTab:CreateSection("Informasi Bantuan")
+VIPTab:CreateButton({
+   Name = "ℹ️ Cara Memasukkan VIP Script Milik Anda Sendiri!",
+   Callback = function()
+      pcall(function() setclipboard("https://discord.gg/noinvitelink") end)
       Rayfield:Notify({
-         Title = "Infinite Yield",
-         Content = "Script Infinite Yield berhasil diaktifkan!",
-         Duration = 4,
-         --Image = 13047715178,
+         Title = "Info VIP",
+         Content = "Link Discord disalin! DM Zami untuk pasang script VIP & minta password.",
+         Duration = 5,
       })
    end,
 })
 
-local CrypticButton = MainTab:CreateButton({
-   Name = "Cryptic",
-   Callback = function()
-      loadstring(game:HttpGet('https://raw.githubusercontent.com/OnlyCryptic/Cryptic/main/main.lua'))()
-      Rayfield:Notify({
-         Title = "Cryptic",
-         Content = "Script Cryptic berhasil diaktifkan!",
-         Duration = 4,
-         --Image = 13047715178,
-      })
-   end,
-})
-
-local FlamesButton = MainTab:CreateButton({
-   Name = "Flames Hub",
-   Callback = function()
-      loadstring(game:HttpGet('https://raw.githubusercontent.com/zdanx/flames-hub-2/refs/heads/main/Experiences/13967668166.lua'))()
-      Rayfield:Notify({
-         Title = "Flames Hub",
-         Content = "Script Flames Hub berhasil diaktifkan!",
-         Duration = 4,
-         --Image = 13047715178,
-      })
-   end,
-})
-
-local TPTab = Window:CreateTab("🏝 Teleports", nil) 
-TPTab:CreateButton({ Name = "Starter Island", Callback = function() end })
-TPTab:CreateButton({ Name = "Pirate Island", Callback = function() end })
-TPTab:CreateButton({ Name = "Pineapple Paradise", Callback = function() end })
-
-local MiscTab = Window:CreateTab("🎲 Misc", nil)
+local MiscTab = Window:CreateTab("COMING SOON 🚀", nil)
