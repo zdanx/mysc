@@ -14,6 +14,10 @@
 
   "FreeScripts": [
     {
+      "ScriptName": "SaZa Emote",
+      "ScriptURL": "https://raw.githubusercontent.com/zdanx/mysc/refs/heads/main/cstm/SaZa%20Emote.lua"
+    },
+    {
       "ScriptName": "Infinite Yield",
       "ScriptURL": "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"
     },
