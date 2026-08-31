@@ -24,7 +24,7 @@ Compkiller:Loader("rbxassetid://75680508301013" , 2.5).yield();
 local Window = Compkiller.new({
 	Name = "COMPKILLER",
 	Keybind = "LeftAlt",
-	Logo = "rbxassetid://75680508301013",
+	Logo = "rbxassetid://74703843682184",
 	--Scale = Compkiller.Scale.Window,  Leave blank if you want automatic scale [PC, Mobile].
 	TextSize = 15,
 });
@@ -35,7 +35,7 @@ Notifier.new({
 	Title = "Notification",
 	Content = "Thank you for use this script!",
 	Duration = 10,
-	Icon = "rbxassetid://75680508301013"
+	Icon = "rbxassetid://74703843682184"
 });
 
 -- Watermark --
