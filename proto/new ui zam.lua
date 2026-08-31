@@ -18,13 +18,13 @@ local ConfigManager = Compkiller:ConfigManager({
 });
 
 -- Loading UI (Icon <string> , Duration <number>) --
-Compkiller:Loader("rbxassetid://94364486491269" , 2.5).yield();
+Compkiller:Loader("rbxassetid://75680508301013" , 2.5).yield();
 
 -- Creating Window --
 local Window = Compkiller.new({
 	Name = "COMPKILLER",
 	Keybind = "LeftAlt",
-	Logo = "rbxassetid://94364486491269",
+	Logo = "rbxassetid://75680508301013",
 	--Scale = Compkiller.Scale.Window,  Leave blank if you want automatic scale [PC, Mobile].
 	TextSize = 15,
 });
@@ -35,7 +35,7 @@ Notifier.new({
 	Title = "Notification",
 	Content = "Thank you for use this script!",
 	Duration = 10,
-	Icon = "rbxassetid://94364486491269"
+	Icon = "rbxassetid://75680508301013"
 });
 
 -- Watermark --
