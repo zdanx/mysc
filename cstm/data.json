@@ -31,6 +31,10 @@
     {
       "ScriptName": "Flames Hub",
       "ScriptURL": "https://raw.githubusercontent.com/zdanx/mysc/refs/heads/main/fh.lua"
+    },
+    {
+      "ScriptName": "Chat",
+      "ScriptURL": "https://pastefy.app/108vjy8A/raw"
     }
   ],
 
