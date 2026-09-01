@@ -10305,7 +10305,7 @@ function Compkiller:Loader(IconId,Duration)
 	Icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Icon.BorderSizePixel = 0
 	Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Icon.Size = UDim2.new(0, 750, 0, 750)
+	Icon.Size = UDim2.new(0, 1200, 0, 1200)
 	Icon.ZIndex = 100
 	Icon.Image = IconId or Compkiller.Logo;
 	Icon.ImageTransparency = 1
