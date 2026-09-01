@@ -10305,7 +10305,7 @@ function Compkiller:Loader(IconId,Duration)
 	Icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Icon.BorderSizePixel = 0
 	Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Icon.Size = UDim2.new(0, 5000, 0, 5000)
+	Icon.Size = UDim2.new(0, 3500, 0, 3500)
 	Icon.ZIndex = 100
 	Icon.Image = IconId or Compkiller.Logo;
 	Icon.ImageTransparency = 1
@@ -10331,7 +10331,7 @@ function Compkiller:Loader(IconId,Duration)
 	task.delay(0.5,function()
 		Compkiller:_Animation(Icon,TweenInfo.new(0.75,Enum.EasingStyle.Quint),{
 			ImageTransparency = 0.01,
-			Size = UDim2.new(0, 500, 0, 500)
+			Size = UDim2.new(0, 360, 0, 360)
 		});
 
 		task.delay(0.25,function()
