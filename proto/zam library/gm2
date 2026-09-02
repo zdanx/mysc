@@ -1,0 +1,181 @@
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+
+local Library = {}
+Library.__index = Library
+
+function Library.CreateWindow(titleText)
+    local self = setmetatable({}, Library)
+
+    -- Parent Gui (Mendukung Exploit Executors & Normal Client)
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "ModernLibrary_" .. math.random(100, 999)
+    gui.ResetOnSpawn = false
+    gui.Parent = (gethui and gethui()) or CoreGui or game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+
+    -- Main Window
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainFrame"
+    mainFrame.Size = UDim2.new(0, 420, 0, 300)
+    mainFrame.Position = UDim2.new(0.5, -210, 0.5, -150)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 24)
+    mainFrame.BorderSizePixel = 0
+    mainFrame.ClipsDescendants = true
+    mainFrame.Parent = gui
+
+    local mainCorner = Instance.new("UICorner")
+    mainCorner.CornerRadius = UDim.new(0, 10)
+    mainCorner.Parent = mainFrame
+
+    -- Header / Topbar
+    local topbar = Instance.new("Frame")
+    topbar.Name = "Topbar"
+    topbar.Size = UDim2.new(1, 0, 0, 40)
+    topbar.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+    topbar.BorderSizePixel = 0
+    topbar.Parent = mainFrame
+
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, -20, 1, 0)
+    title.Position = UDim2.new(0, 15, 0, 0)
+    title.BackgroundTransparency = 1
+    title.Text = titleText or "UI Hub"
+    title.TextColor3 = Color3.fromRGB(240, 240, 255)
+    title.TextSize = 15
+    title.Font = Enum.Font.GothamBold
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = topbar
+
+    -- Container Utama (Scrollable)
+    local container = Instance.new("ScrollingFrame")
+    container.Size = UDim2.new(1, -20, 1, -50)
+    container.Position = UDim2.new(0, 10, 0, 45)
+    container.BackgroundTransparency = 1
+    container.BorderSizePixel = 0
+    container.ScrollBarThickness = 3
+    container.ScrollBarImageColor3 = Color3.fromRGB(80, 80, 110)
+    container.Parent = mainFrame
+
+    local layout = Instance.new("UIListLayout")
+    layout.Padding = UDim.new(0, 8)
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.Parent = container
+
+    -- Auto Adjust Canvas Height
+    layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        container.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 10)
+    end)
+
+    self.Container = container
+    return self
+end
+
+function Library:AddButton(text, callback)
+    callback = callback or function() end
+
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, 0, 0, 36)
+    btn.BackgroundColor3 = Color3.fromRGB(30, 30, 42)
+    btn.AutoButtonColor = false
+    btn.Font = Enum.Font.GothamMedium
+    btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(200, 200, 220)
+    btn.TextSize = 13
+    btn.Parent = self.Container
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 8)
+    corner.Parent = btn
+
+    -- Animasi Hover & Click
+    btn.MouseEnter:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(45, 45, 65),
+            TextColor3 = Color3.fromRGB(255, 255, 255)
+        }):Play()
+    end)
+
+    btn.MouseLeave:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(30, 30, 42),
+            TextColor3 = Color3.fromRGB(200, 200, 220)
+        }):Play()
+    end)
+
+    btn.MouseButton1Down:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.08), { Size = UDim2.new(0.98, 0, 0, 34) }):Play()
+    end)
+
+    btn.MouseButton1Up:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.08), { Size = UDim2.new(1, 0, 0, 36) }):Play()
+        task.spawn(callback)
+    end)
+end
+
+function Library:AddToggle(text, defaultState, callback)
+    local state = defaultState or false
+    callback = callback or function() end
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(1, 0, 0, 38)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 42)
+    frame.Parent = self.Container
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 8)
+    corner.Parent = frame
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -60, 1, 0)
+    label.Position = UDim2.new(0, 12, 0, 0)
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.TextColor3 = Color3.fromRGB(200, 200, 220)
+    label.TextSize = 13
+    label.Font = Enum.Font.GothamMedium
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = frame
+
+    -- Switch Frame
+    local toggleBg = Instance.new("Frame")
+    toggleBg.Size = UDim2.new(0, 38, 0, 20)
+    toggleBg.Position = UDim2.new(1, -48, 0.5, -10)
+    toggleBg.BackgroundColor3 = state and Color3.fromRGB(90, 100, 245) or Color3.fromRGB(50, 50, 65)
+    toggleBg.Parent = frame
+
+    local toggleCorner = Instance.new("UICorner")
+    toggleCorner.CornerRadius = UDim.new(1, 0)
+    toggleCorner.Parent = toggleBg
+
+    local circle = Instance.new("Frame")
+    circle.Size = UDim2.new(0, 14, 0, 14)
+    circle.Position = state and UDim2.new(1, -17, 0.5, -7) or UDim2.new(0, 3, 0.5, -7)
+    circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    circle.Parent = toggleBg
+
+    local circleCorner = Instance.new("UICorner")
+    circleCorner.CornerRadius = UDim.new(1, 0)
+    circleCorner.Parent = circle
+
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, 0, 1, 0)
+    btn.BackgroundTransparency = 1
+    btn.Text = ""
+    btn.Parent = frame
+
+    btn.MouseButton1Click:Connect(function()
+        state = not state
+
+        TweenService:Create(toggleBg, TweenInfo.new(0.2), {
+            BackgroundColor3 = state and Color3.fromRGB(90, 100, 245) or Color3.fromRGB(50, 50, 65)
+        }):Play()
+
+        TweenService:Create(circle, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            Position = state and UDim2.new(1, -17, 0.5, -7) or UDim2.new(0, 3, 0.5, -7)
+        }):Play()
+
+        task.spawn(callback, state)
+    end)
+end
+
+return Library
