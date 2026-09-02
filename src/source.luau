@@ -1,4 +1,4 @@
---[[
+--[[ highlight diganti
     		Compkiller Interface
 
     Author: 4lpaca
