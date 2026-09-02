@@ -13,11 +13,15 @@ function Library.CreateWindow(titleText)
     gui.ResetOnSpawn = false
     gui.Parent = (gethui and gethui()) or CoreGui or game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
 
+    -- Posisi Menu (Terbuka & Tertutup)
+    local openPos = UDim2.new(0.5, -210, 0.5, -150)
+    local closedPos = UDim2.new(0.5, -210, -0.6, 0) -- Di atas batas layar
+
     -- Main Window
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
     mainFrame.Size = UDim2.new(0, 420, 0, 300)
-    mainFrame.Position = UDim2.new(0.5, -210, 0.5, -150)
+    mainFrame.Position = openPos
     mainFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 24)
     mainFrame.BorderSizePixel = 0
     mainFrame.ClipsDescendants = true
@@ -26,6 +30,25 @@ function Library.CreateWindow(titleText)
     local mainCorner = Instance.new("UICorner")
     mainCorner.CornerRadius = UDim.new(0, 10)
     mainCorner.Parent = mainFrame
+
+    -- Tombol Buka Melayang (Panah ke Bawah)
+    local openBtn = Instance.new("TextButton")
+    openBtn.Name = "OpenButton"
+    openBtn.Size = UDim2.new(0, 42, 0, 32)
+    openBtn.Position = UDim2.new(0.5, -21, 0, -40) -- Posisi awal sembunyi di atas
+    openBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+    openBtn.BorderSizePixel = 0
+    openBtn.Text = "▼"
+    openBtn.TextColor3 = Color3.fromRGB(200, 200, 240)
+    openBtn.TextSize = 13
+    openBtn.Font = Enum.Font.GothamBold
+    openBtn.AutoButtonColor = false
+    openBtn.Visible = false
+    openBtn.Parent = gui
+
+    local openCorner = Instance.new("UICorner")
+    openCorner.CornerRadius = UDim.new(0, 8)
+    openCorner.Parent = openBtn
 
     -- Header / Topbar
     local topbar = Instance.new("Frame")
@@ -36,7 +59,7 @@ function Library.CreateWindow(titleText)
     topbar.Parent = mainFrame
 
     local title = Instance.new("TextLabel")
-    title.Size = UDim2.new(1, -20, 1, 0)
+    title.Size = UDim2.new(1, -60, 1, 0)
     title.Position = UDim2.new(0, 15, 0, 0)
     title.BackgroundTransparency = 1
     title.Text = titleText or "UI Hub"
@@ -45,6 +68,23 @@ function Library.CreateWindow(titleText)
     title.Font = Enum.Font.GothamBold
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = topbar
+
+    -- Tombol Close (X) di Topbar
+    local closeBtn = Instance.new("TextButton")
+    closeBtn.Name = "CloseButton"
+    closeBtn.Size = UDim2.new(0, 28, 0, 28)
+    closeBtn.Position = UDim2.new(1, -34, 0.5, -14)
+    closeBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 48)
+    closeBtn.Text = "✕"
+    closeBtn.TextColor3 = Color3.fromRGB(180, 180, 200)
+    closeBtn.TextSize = 13
+    closeBtn.Font = Enum.Font.GothamBold
+    closeBtn.AutoButtonColor = false
+    closeBtn.Parent = topbar
+
+    local closeCorner = Instance.new("UICorner")
+    closeCorner.CornerRadius = UDim.new(0, 6)
+    closeCorner.Parent = closeBtn
 
     -- Container Utama (Scrollable)
     local container = Instance.new("ScrollingFrame")
@@ -65,6 +105,91 @@ function Library.CreateWindow(titleText)
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         container.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 10)
     end)
+
+    -- Logika Animasi Open / Close
+    local isAnimating = false
+
+    local function closeMenu()
+        if isAnimating then return end
+        isAnimating = true
+
+        -- Animasi Menu Geser ke Atas (Menutup)
+        local tweenUp = TweenService:Create(mainFrame, TweenInfo.new(0.45, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {
+            Position = closedPos
+        })
+        tweenUp:Play()
+
+        tweenUp.Completed:Connect(function()
+            -- Tampilkan Tombol Panah Buka yang Muncul dari Atas
+            openBtn.Position = UDim2.new(0.5, -21, 0, -40)
+            openBtn.Visible = true
+
+            local tweenBtn = TweenService:Create(openBtn, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+                Position = UDim2.new(0.5, -21, 0, 10)
+            })
+            tweenBtn:Play()
+            isAnimating = false
+        end)
+    end
+
+    local function openMenu()
+        if isAnimating then return end
+        isAnimating = true
+
+        -- Animasi Sembunyikan Tombol Panah Buka
+        local tweenBtn = TweenService:Create(openBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+            Position = UDim2.new(0.5, -21, 0, -40)
+        })
+        tweenBtn:Play()
+
+        tweenBtn.Completed:Connect(function()
+            openBtn.Visible = false
+
+            -- Animasi Menu Turun Kembali (Membuka)
+            local tweenDown = TweenService:Create(mainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+                Position = openPos
+            })
+            tweenDown:Play()
+
+            tweenDown.Completed:Connect(function()
+                isAnimating = false
+            end)
+        end)
+    end
+
+    -- Event & Animasi Hover Tombol Close (X)
+    closeBtn.MouseEnter:Connect(function()
+        TweenService:Create(closeBtn, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(220, 60, 70),
+            TextColor3 = Color3.fromRGB(255, 255, 255)
+        }):Play()
+    end)
+
+    closeBtn.MouseLeave:Connect(function()
+        TweenService:Create(closeBtn, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(35, 35, 48),
+            TextColor3 = Color3.fromRGB(180, 180, 200)
+        }):Play()
+    end)
+
+    closeBtn.MouseButton1Click:Connect(closeMenu)
+
+    -- Event & Animasi Hover Tombol Open (▼)
+    openBtn.MouseEnter:Connect(function()
+        TweenService:Create(openBtn, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(50, 50, 75),
+            TextColor3 = Color3.fromRGB(255, 255, 255)
+        }):Play()
+    end)
+
+    openBtn.MouseLeave:Connect(function()
+        TweenService:Create(openBtn, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(25, 25, 35),
+            TextColor3 = Color3.fromRGB(200, 200, 240)
+        }):Play()
+    end)
+
+    openBtn.MouseButton1Click:Connect(openMenu)
 
     self.Container = container
     return self
@@ -87,7 +212,6 @@ function Library:AddButton(text, callback)
     corner.CornerRadius = UDim.new(0, 8)
     corner.Parent = btn
 
-    -- Animasi Hover & Click
     btn.MouseEnter:Connect(function()
         TweenService:Create(btn, TweenInfo.new(0.2), {
             BackgroundColor3 = Color3.fromRGB(45, 45, 65),
@@ -136,7 +260,6 @@ function Library:AddToggle(text, defaultState, callback)
     label.TextXAlignment = Enum.TextXAlignment.Left
     label.Parent = frame
 
-    -- Switch Frame
     local toggleBg = Instance.new("Frame")
     toggleBg.Size = UDim2.new(0, 38, 0, 20)
     toggleBg.Position = UDim2.new(1, -48, 0.5, -10)
@@ -179,3 +302,9 @@ function Library:AddToggle(text, defaultState, callback)
 end
 
 return Library
+```eof
+
+### Perubahan Utama:
+1. **Tombol Close (`✕`)**: Ditambahkan di sudut kanan atas header dengan efek *hover* berubah menjadi merah.
+2. **Animasi Slide-Up**: Saat tombol close diklik, window menu meluncur mulus ke atas luar layar menggunakan `EasingStyle.Quart`.
+3. **Tombol Open (`▼`)**: Saat menu tertutup, tombol panah kecil melayang turun dari atas tengah layar. Diklik kembali untuk menurunkan menu ke posisi semula.
