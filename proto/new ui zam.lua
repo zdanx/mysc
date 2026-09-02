@@ -1,50 +1,63 @@
---[[
-		Example Compkiller UI
-	
-	Author: 4lpaca
-	
-	Press Left Alt to open / close
-]]
+-- =======================================================
+-- 1. CLEANUP UI LAMA (AUTO-REPLACE)
+-- =======================================================
+if getgenv().Zami_ActiveUI then
+    pcall(function() getgenv().Zami_ActiveUI:Destroy() end)
+    getgenv().Zami_ActiveUI = nil
+end
 
-local Compkiller = loadstring(game:HttpGet("https://raw.githubusercontent.com/4lpaca-pin/CompKiller/refs/heads/main/src/source.luau"))();
+local TargetParent = (gethui and gethui()) or game:GetService("CoreGui")
+local Compkiller = loadstring(game:HttpGet("https://raw.githubusercontent.com/zdanx/mysc/refs/heads/main/src/source.luau"))();
 
 -- Create Notification --
 local Notifier = Compkiller.newNotify();
 
--- Create Config Mamager --
+-- Create Config Manager --
 local ConfigManager = Compkiller:ConfigManager({
 	Directory = "Compkiller-UI",
 	Config = "Example-Configs"
 });
 
--- Loading UI (Icon <string> , Duration <number>) --
+-- Loading UI (Script akan tertahan di sini selama 2.5 detik) --
 Compkiller:Loader("rbxassetid://75680508301013" , 2.5).yield();
+
+-- =======================================================
+-- 2. SNAPSHOT DIAMBIL SETELAH LOADER SELESAI
+-- =======================================================
+local UIBefore = {}
+for _, ui in ipairs(TargetParent:GetChildren()) do
+    UIBefore[ui] = true
+end
 
 -- Creating Window --
 local Window = Compkiller.new({
-	Name = "COMPKILLER",
+	Name = "S ARCHIVE",
 	Keybind = "LeftAlt",
 	Logo = "rbxassetid://116526595864004",
-	--Scale = Compkiller.Scale.Window,  Leave blank if you want automatic scale [PC, Mobile].
+	--Scale = Compkiller.Scale.Window, 
 	TextSize = 15,
 });
 
--- Notification --
+-- =======================================================
+-- 3. TANGKAP UI UTAMA LALU SIMPAN KE MEMORI
+-- =======================================================
+for _, ui in ipairs(TargetParent:GetChildren()) do
+    if not UIBefore[ui] then
+        getgenv().Zami_ActiveUI = ui
+        break
+    end
+end
 
+-- Notification --
 Notifier.new({
 	Title = "Notification",
-	Content = "Thank you for use this script!",
+	Content = "Thanks yaww udaa pake script zami!... :D",
 	Duration = 10,
 	Icon = "rbxassetid://116526595864004"
 });
 
 -- Watermark --
 local Watermark = Window:Watermark();
-
-Watermark:AddText({
-	Icon = "user",
-	Text = "4lpaca",
-});
 
 Watermark:AddText({
 	Icon = "clock",
@@ -69,13 +82,13 @@ Watermark:AddText({
 
 -- Creating Tab Category --
 Window:DrawCategory({
-	Name = "Example"
+	Name = "Menu"
 });
 
 -- Creating Tab --
 local NormalTab = Window:DrawTab({
-	Name = "Example Tab",
-	Icon = "apple",
+	Name = "Life Together",
+	Icon = "home",
 	EnableScrolling = true
 });
 
@@ -87,7 +100,7 @@ local NormalSection = NormalTab:DrawSection({
 
 local Toggle = NormalSection:AddToggle({
 	Name = "Toggle",
-	Flag = "Toggle_Example", -- Leave it blank will not save to config
+	Flag = "Toggle_Example", 
 	Default = false,
 	Callback = print,
 });
@@ -107,7 +120,7 @@ Toggle.Link:AddHelper({
 -- Add Option To Toggle --
 local Toggle2 = NormalSection:AddToggle({
 	Name = "Toggle",
-	Flag = "Toggle_Example2", -- Leave it blank will not save to config
+	Flag = "Toggle_Example2", 
 	Default = false,
 	Callback = print,
 });
@@ -123,7 +136,7 @@ Option:AddToggle({
 do
 	local Toggle2 = NormalSection:AddToggle({
 		Name = "Risky Feature",
-		Flag = "Toggle_Example5", -- Leave it blank will not save to config
+		Flag = "Toggle_Example5", 
 		Default = false,
 		Risky = true,
 		Callback = print,
@@ -212,13 +225,11 @@ local DrawElements = function(Tab,Position)
 			Callback = print,
 		});
 
-		-- Add Keybind To Toggle --
 		local Keybind = Toggle.Link:AddKeybind({
 			Default = "E",
 			Callback = print
 		});
 
-		-- Add Option To Toggle --
 		local Toggle2 = NormalSectionRight:AddToggle({
 			Name = "Toggle",
 			Default = false,
@@ -284,6 +295,7 @@ end;
 
 DrawElements(NormalTab,'right')
 
+--[[
 -- Single Tab --
 local SingleTab = Window:DrawTab({
 	Name = "Single Tab",
@@ -307,7 +319,7 @@ local ExtractTab = ContainerTab:DrawTab({
 local SingleExtractTab = ContainerTab:DrawTab({
 	Name = "Tab 2",
 	Type = "Single",
-	EnableScrolling = true, -- this will make tab can scrolling (recommend)
+	EnableScrolling = true, 
 });
 
 DrawElements(ExtractTab,"left");
@@ -315,9 +327,10 @@ DrawElements(ExtractTab,"right");
 
 DrawElements(SingleExtractTab,"left");
 DrawElements(SingleExtractTab,"right");
+]]
 
 Window:DrawCategory({
-	Name = "Misc"
+	Name = "Lainnya"
 });
 
 local SettingTab = Window:DrawTab({
@@ -345,6 +358,7 @@ Settings:AddToggle({
 	end,
 });
 
+--[[
 Settings:AddColorPicker({
 	Name = "Highlight",
 	Default = Compkiller.Colors.Highlight,
@@ -359,7 +373,6 @@ Settings:AddColorPicker({
 	Default = Compkiller.Colors.Toggle,
 	Callback = function(v)
 		Compkiller.Colors.Toggle = v;
-		
 		Compkiller:RefreshCurrentColor(v);
 	end,
 });
@@ -369,7 +382,6 @@ Settings:AddColorPicker({
 	Default = Compkiller.Colors.DropColor,
 	Callback = function(v)
 		Compkiller.Colors.DropColor = v;
-
 		Compkiller:RefreshCurrentColor(v);
 	end,
 });
@@ -379,7 +391,6 @@ Settings:AddColorPicker({
 	Default = Compkiller.Colors.Risky,
 	Callback = function(v)
 		Compkiller.Colors.Risky = v;
-
 		Compkiller:RefreshCurrentColor(v);
 	end,
 });
@@ -389,7 +400,6 @@ Settings:AddColorPicker({
 	Default = Compkiller.Colors.MouseEnter,
 	Callback = function(v)
 		Compkiller.Colors.MouseEnter = v;
-
 		Compkiller:RefreshCurrentColor(v);
 	end,
 });
@@ -399,7 +409,6 @@ Settings:AddColorPicker({
 	Default = Compkiller.Colors.BlockColor,
 	Callback = function(v)
 		Compkiller.Colors.BlockColor = v;
-
 		Compkiller:RefreshCurrentColor(v);
 	end,
 });
@@ -409,7 +418,6 @@ Settings:AddColorPicker({
 	Default = Compkiller.Colors.BGDBColor,
 	Callback = function(v)
 		Compkiller.Colors.BGDBColor = v;
-
 		Compkiller:RefreshCurrentColor(v);
 	end,
 });
@@ -419,7 +427,6 @@ Settings:AddColorPicker({
 	Default = Compkiller.Colors.BlockBackground,
 	Callback = function(v)
 		Compkiller.Colors.BlockBackground = v;
-
 		Compkiller:RefreshCurrentColor(v);
 	end,
 });
@@ -429,7 +436,6 @@ Settings:AddColorPicker({
 	Default = Compkiller.Colors.StrokeColor,
 	Callback = function(v)
 		Compkiller.Colors.StrokeColor = v;
-
 		Compkiller:RefreshCurrentColor(v);
 	end,
 });
@@ -439,7 +445,6 @@ Settings:AddColorPicker({
 	Default = Compkiller.Colors.HighStrokeColor,
 	Callback = function(v)
 		Compkiller.Colors.HighStrokeColor = v;
-
 		Compkiller:RefreshCurrentColor(v);
 	end,
 });
@@ -449,7 +454,6 @@ Settings:AddColorPicker({
 	Default = Compkiller.Colors.SwitchColor,
 	Callback = function(v)
 		Compkiller.Colors.SwitchColor = v;
-
 		Compkiller:RefreshCurrentColor(v);
 	end,
 });
@@ -459,7 +463,6 @@ Settings:AddColorPicker({
 	Default = Compkiller.Colors.LineColor,
 	Callback = function(v)
 		Compkiller.Colors.LineColor = v;
-
 		Compkiller:RefreshCurrentColor(v);
 	end,
 });
@@ -477,6 +480,7 @@ Settings:AddButton({
 		});
 	end,
 });
+]]
 
 ThemeTab:DrawSection({
 	Name = "UI Themes"
