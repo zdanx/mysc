@@ -7,6 +7,29 @@
 -- file, You can obtain one at https://mozilla.org/MPL/2.0/.
 --
 --
+-- 1. HAPUS UI LAMA (Letakkan di bagian paling atas script)
+if getgenv().MyRayfieldWindow then
+    pcall(function()
+        getgenv().MyRayfieldWindow:Unload()
+    end)
+    getgenv().MyRayfieldWindow = nil
+end
+
+-- (Di sini adalah kode Rayfield kamu yang lain...)
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/gen2'))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Contoh UI",
+    LoadingTitle = "Loading...",
+    LoadingSubtitle = "by Kamu",
+    ConfigurationSaving = {
+        Enabled = false,
+    }
+})
+
+-- 2. SIMPAN WINDOW KE GLOBAL (Letakkan setelah Window dibuat)
+getgenv().MyRayfieldWindow = Window
+
 local a local aa,ab,ac,ad,ae,af,ag,ah,ai,aj,ak,al,am,b,c,d,e,f,g,h,i={function()local b,c,d=a(1)local e return(function(
 ...)local f,g,h,i,j=d(c.utility.variables),d(c.utility.image),d(c.utility.locale),d(c.utility.constants),d(c.types)
 export type Theme=j.Theme export type Translator=j.Translator export type Translations=j.Translations export type
