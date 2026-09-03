@@ -1,4 +1,4 @@
---[[ tema default diganti
+--[[ posisi watermark
     		Compkiller Interface
 
     Author: 4lpaca
@@ -9615,7 +9615,7 @@ function Compkiller.new(Config : Window)
 			Watermark.BackgroundTransparency = 0.025
 			Watermark.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			Watermark.BorderSizePixel = 0
-			Watermark.Position = UDim2.new(1, -10, 0, 10)
+			Watermark.Position = UDim2.new(1, -10, 0, 50)
 			Watermark.Size = UDim2.new(0, 45, 0, 23)
 			Watermark.ZIndex = 150
 
