@@ -1,4 +1,4 @@
---[[ posisi watermark -50
+--[[ posisi watermark -50 2
     		Compkiller Interface
 
     Author: 4lpaca
