@@ -1,5 +1,5 @@
 -- ========================================== --
---  MOBILE & PC FLY UI DENGAN +/- SPEED       --
+--  MOBILE-FRIENDLY FLY UI (FIXED TOUCH)      --
 -- ========================================== --
 
 local Players = game:GetService("Players")
@@ -10,7 +10,7 @@ local LP = Players.LocalPlayer
 getgenv().C = { FlyEnabled = false, FlySpeed = 1 }
 local C = getgenv().C
 
--- Deteksi tempat aman untuk memuat UI (Support semua Executor)
+-- Deteksi tempat aman untuk memuat UI
 local targetGui = (gethui and gethui()) or game:GetService("CoreGui") or LP:WaitForChild("PlayerGui")
 
 -- Hapus UI lama jika script di-execute berkali-kali
@@ -25,10 +25,10 @@ SG.ResetOnSpawn = false
 SG.Parent = targetGui
 
 -- ========================================== --
---  FUNGSI DRAGGABLE (AGAR UI BISA DIGESER)   --
+--  FUNGSI DRAGGABLE (UNTUK GESER UI DI HP)   --
 -- ========================================== --
 local function MakeDraggable(gui)
-    local dragging, dragInput, dragStart, startPos
+    local dragging, dragStart, startPos
     gui.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
@@ -54,12 +54,13 @@ end
 -- ========================================== --
 local FloatBtn = Instance.new("TextButton")
 FloatBtn.Name = "FloatIcon"
-FloatBtn.Size = UDim2.new(0, 45, 0, 45)
-FloatBtn.Position = UDim2.new(0, 20, 0.5, -22)
+FloatBtn.Size = UDim2.new(0, 50, 0, 50)
+FloatBtn.Position = UDim2.new(0, 20, 0.5, -25)
 FloatBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 FloatBtn.Text = "✈️"
-FloatBtn.TextSize = 24
+FloatBtn.TextSize = 26
 FloatBtn.Font = Enum.Font.SourceSansBold
+FloatBtn.Active = true
 FloatBtn.Parent = SG
 
 local FloatCorner = Instance.new("UICorner")
@@ -76,6 +77,7 @@ MainFrame.Position = UDim2.new(0.5, -120, 0.5, -67)
 MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 MainFrame.BackgroundTransparency = 0.2
 MainFrame.Visible = false
+MainFrame.Active = true
 MainFrame.Parent = SG
 MakeDraggable(MainFrame)
 
@@ -95,13 +97,14 @@ Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Parent = MainFrame
 
 local MinBtn = Instance.new("TextButton")
-MinBtn.Size = UDim2.new(0, 30, 0, 30)
+MinBtn.Size = UDim2.new(0, 35, 0, 35)
 MinBtn.Position = UDim2.new(1, -35, 0, 2)
 MinBtn.BackgroundTransparency = 1
 MinBtn.Text = "✖"
 MinBtn.TextColor3 = Color3.fromRGB(200, 50, 50)
-MinBtn.TextSize = 16
+MinBtn.TextSize = 18
 MinBtn.Font = Enum.Font.GothamBold
+MinBtn.Active = true
 MinBtn.Parent = MainFrame
 
 local ToggleBtn = Instance.new("TextButton")
@@ -112,6 +115,7 @@ ToggleBtn.Text = "Fly: OFF"
 ToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 ToggleBtn.TextSize = 14
 ToggleBtn.Font = Enum.Font.GothamSemibold
+ToggleBtn.Active = true
 ToggleBtn.Parent = MainFrame
 Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(0, 6)
 
@@ -134,6 +138,7 @@ MinusBtn.Text = "-"
 MinusBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 MinusBtn.TextSize = 18
 MinusBtn.Font = Enum.Font.GothamBold
+MinusBtn.Active = true
 MinusBtn.Parent = MainFrame
 Instance.new("UICorner", MinusBtn).CornerRadius = UDim.new(0, 6)
 
@@ -145,28 +150,29 @@ PlusBtn.Text = "+"
 PlusBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 PlusBtn.TextSize = 18
 PlusBtn.Font = Enum.Font.GothamBold
+PlusBtn.Active = true
 PlusBtn.Parent = MainFrame
 Instance.new("UICorner", PlusBtn).CornerRadius = UDim.new(0, 6)
 
 -- ========================================== --
---  LOGIKA KLIK BUKA/TUTUP MENU & SPEED       --
+--  LOGIKA KLIK (MENGGUNAKAN .Activated)      --
 -- ========================================== --
-FloatBtn.MouseButton1Click:Connect(function()
+FloatBtn.Activated:Connect(function()
     FloatBtn.Visible = false
     MainFrame.Visible = true
 end)
 
-MinBtn.MouseButton1Click:Connect(function()
+MinBtn.Activated:Connect(function()
     MainFrame.Visible = false
     FloatBtn.Visible = true
 end)
 
-MinusBtn.MouseButton1Click:Connect(function()
+MinusBtn.Activated:Connect(function()
     C.FlySpeed = math.clamp(C.FlySpeed - 1, 0.1, 100)
     SpeedLabel.Text = "Speed: " .. tostring(C.FlySpeed)
 end)
 
-PlusBtn.MouseButton1Click:Connect(function()
+PlusBtn.Activated:Connect(function()
     C.FlySpeed = math.clamp(C.FlySpeed + 1, 0.1, 100)
     SpeedLabel.Text = "Speed: " .. tostring(C.FlySpeed)
 end)
@@ -178,12 +184,11 @@ local FlyDown, FlyUp, FLYING = nil, nil, false
 local md = {F=0, B=0, L=0, R=0}
 local ControlModule = nil
 
--- Mencoba mengambil ControlModule bawaan Roblox (Untuk deteksi Analog HP)
 pcall(function()
     ControlModule = require(LP:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetControls()
 end)
 
-ToggleBtn.MouseButton1Click:Connect(function()
+ToggleBtn.Activated:Connect(function()
     C.FlyEnabled = not C.FlyEnabled
     
     if C.FlyEnabled then
@@ -209,20 +214,17 @@ ToggleBtn.MouseButton1Click:Connect(function()
                 local camFrame = Workspace.CurrentCamera.CoordinateFrame
                 local moveF, moveR = 0, 0
                 
-                -- 1. Deteksi Analog HP / Controller / WASD dari sistem Roblox
                 if ControlModule then
                     local moveVec = ControlModule:GetMoveVector()
                     moveF = -moveVec.Z
                     moveR = moveVec.X
                 end
                 
-                -- 2. Fallback (Cadangan) jika ControlModule gagal dimuat, pakai deteksi WASD manual
                 if moveF == 0 and moveR == 0 then
                     moveF = md.F - md.B
                     moveR = md.R - md.L
                 end
                 
-                -- Terapkan Kecepatan
                 if moveF ~= 0 or moveR ~= 0 then
                     BV.Velocity = ((camFrame.LookVector * moveF) + (camFrame.RightVector * moveR)) * (C.FlySpeed * 50)
                 else
@@ -235,7 +237,6 @@ ToggleBtn.MouseButton1Click:Connect(function()
             if BV then BV:Destroy() end
         end)
         
-        -- Event Cadangan Keyboard (PC)
         FlyDown = UIS.InputBegan:Connect(function(input, gp)
             if not gp then
                 local K = input.KeyCode
