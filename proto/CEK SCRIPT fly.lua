@@ -1,5 +1,5 @@
 -- ========================================== --
---  MODERN FLY UI WITH +/- SPEED BUTTONS      --
+--  MOBILE & PC FLY UI DENGAN +/- SPEED       --
 -- ========================================== --
 
 local Players = game:GetService("Players")
@@ -10,7 +10,7 @@ local LP = Players.LocalPlayer
 getgenv().C = { FlyEnabled = false, FlySpeed = 1 }
 local C = getgenv().C
 
--- 1. Deteksi tempat aman untuk memuat UI (Support semua Executor)
+-- Deteksi tempat aman untuk memuat UI (Support semua Executor)
 local targetGui = (gethui and gethui()) or game:GetService("CoreGui") or LP:WaitForChild("PlayerGui")
 
 -- Hapus UI lama jika script di-execute berkali-kali
@@ -18,7 +18,7 @@ if targetGui:FindFirstChild("ModernFlyUI") then
     targetGui.ModernFlyUI:Destroy()
 end
 
--- 2. Membuat ScreenGui
+-- Membuat ScreenGui
 local SG = Instance.new("ScreenGui")
 SG.Name = "ModernFlyUI"
 SG.ResetOnSpawn = false
@@ -83,19 +83,17 @@ local MainCorner = Instance.new("UICorner")
 MainCorner.CornerRadius = UDim.new(0, 8)
 MainCorner.Parent = MainFrame
 
--- Judul
 local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, -40, 0, 35)
 Title.Position = UDim2.new(0, 10, 0, 0)
 Title.BackgroundTransparency = 1
-Title.Text = "Terbang"
+Title.Text = "Flight Menu"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 16
 Title.Font = Enum.Font.GothamBold
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Parent = MainFrame
 
--- Tombol Minimize/Close
 local MinBtn = Instance.new("TextButton")
 MinBtn.Size = UDim2.new(0, 30, 0, 30)
 MinBtn.Position = UDim2.new(1, -35, 0, 2)
@@ -106,19 +104,17 @@ MinBtn.TextSize = 16
 MinBtn.Font = Enum.Font.GothamBold
 MinBtn.Parent = MainFrame
 
--- Tombol Toggle Terbang
 local ToggleBtn = Instance.new("TextButton")
 ToggleBtn.Size = UDim2.new(1, -20, 0, 35)
 ToggleBtn.Position = UDim2.new(0, 10, 0, 40)
 ToggleBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-ToggleBtn.Text = "OFF"
+ToggleBtn.Text = "Fly: OFF"
 ToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 ToggleBtn.TextSize = 14
 ToggleBtn.Font = Enum.Font.GothamSemibold
 ToggleBtn.Parent = MainFrame
 Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(0, 6)
 
--- Teks Label Kecepatan
 local SpeedLabel = Instance.new("TextLabel")
 SpeedLabel.Size = UDim2.new(0, 105, 0, 30)
 SpeedLabel.Position = UDim2.new(0, 10, 0, 85)
@@ -130,7 +126,6 @@ SpeedLabel.Font = Enum.Font.GothamSemibold
 SpeedLabel.Parent = MainFrame
 Instance.new("UICorner", SpeedLabel).CornerRadius = UDim.new(0, 6)
 
--- Tombol Kurang (-)
 local MinusBtn = Instance.new("TextButton")
 MinusBtn.Size = UDim2.new(0, 45, 0, 30)
 MinusBtn.Position = UDim2.new(0, 120, 0, 85)
@@ -142,7 +137,6 @@ MinusBtn.Font = Enum.Font.GothamBold
 MinusBtn.Parent = MainFrame
 Instance.new("UICorner", MinusBtn).CornerRadius = UDim.new(0, 6)
 
--- Tombol Tambah (+)
 local PlusBtn = Instance.new("TextButton")
 PlusBtn.Size = UDim2.new(0, 45, 0, 30)
 PlusBtn.Position = UDim2.new(0, 170, 0, 85)
@@ -155,7 +149,7 @@ PlusBtn.Parent = MainFrame
 Instance.new("UICorner", PlusBtn).CornerRadius = UDim.new(0, 6)
 
 -- ========================================== --
---  LOGIKA KLIK BUKA/TUTUP MENU               --
+--  LOGIKA KLIK BUKA/TUTUP MENU & SPEED       --
 -- ========================================== --
 FloatBtn.MouseButton1Click:Connect(function()
     FloatBtn.Visible = false
@@ -167,9 +161,6 @@ MinBtn.MouseButton1Click:Connect(function()
     FloatBtn.Visible = true
 end)
 
--- ========================================== --
---  LOGIKA TOMBOL - DAN + SPEED               --
--- ========================================== --
 MinusBtn.MouseButton1Click:Connect(function()
     C.FlySpeed = math.clamp(C.FlySpeed - 1, 0.1, 100)
     SpeedLabel.Text = "Speed: " .. tostring(C.FlySpeed)
@@ -181,19 +172,24 @@ PlusBtn.MouseButton1Click:Connect(function()
 end)
 
 -- ========================================== --
---  LOGIKA TERBANG (FLY MECHANISM)            --
+--  LOGIKA TERBANG (MOBILE & PC SUPPORT)      --
 -- ========================================== --
 local FlyDown, FlyUp, FLYING = nil, nil, false
 local md = {F=0, B=0, L=0, R=0}
+local ControlModule = nil
+
+-- Mencoba mengambil ControlModule bawaan Roblox (Untuk deteksi Analog HP)
+pcall(function()
+    ControlModule = require(LP:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetControls()
+end)
 
 ToggleBtn.MouseButton1Click:Connect(function()
     C.FlyEnabled = not C.FlyEnabled
     
     if C.FlyEnabled then
-        ToggleBtn.Text = "ON"
-        ToggleBtn.BackgroundColor3 = Color3.fromRGB(30, 160, 50) -- Hijau
+        ToggleBtn.Text = "Fly: ON"
+        ToggleBtn.BackgroundColor3 = Color3.fromRGB(30, 160, 50)
         
-        local LP = Players.LocalPlayer
         repeat task.wait() until LP and LP.Character and LP.Character:WaitForChild("HumanoidRootPart")
         FLYING = true
         
@@ -211,23 +207,41 @@ ToggleBtn.MouseButton1Click:Connect(function()
             while FLYING and LP.Character and LP.Character:FindFirstChild("HumanoidRootPart") do
                 task.wait()
                 local camFrame = Workspace.CurrentCamera.CoordinateFrame
-                if md.F+md.B ~= 0 or md.L+md.R ~= 0 then
-                    BV.Velocity = ((camFrame.LookVector * (md.F + md.B)) + (camFrame.RightVector * (md.L + md.R))) * (C.FlySpeed * 50)
+                local moveF, moveR = 0, 0
+                
+                -- 1. Deteksi Analog HP / Controller / WASD dari sistem Roblox
+                if ControlModule then
+                    local moveVec = ControlModule:GetMoveVector()
+                    moveF = -moveVec.Z
+                    moveR = moveVec.X
+                end
+                
+                -- 2. Fallback (Cadangan) jika ControlModule gagal dimuat, pakai deteksi WASD manual
+                if moveF == 0 and moveR == 0 then
+                    moveF = md.F - md.B
+                    moveR = md.R - md.L
+                end
+                
+                -- Terapkan Kecepatan
+                if moveF ~= 0 or moveR ~= 0 then
+                    BV.Velocity = ((camFrame.LookVector * moveF) + (camFrame.RightVector * moveR)) * (C.FlySpeed * 50)
                 else
                     BV.Velocity = Vector3.new(0, 0, 0)
                 end
+                
                 BG.CFrame = camFrame
             end
             if BG then BG:Destroy() end
             if BV then BV:Destroy() end
         end)
         
+        -- Event Cadangan Keyboard (PC)
         FlyDown = UIS.InputBegan:Connect(function(input, gp)
             if not gp then
                 local K = input.KeyCode
                 if K == Enum.KeyCode.W then md.F = 1
-                elseif K == Enum.KeyCode.S then md.B = -1
-                elseif K == Enum.KeyCode.A then md.L = -1
+                elseif K == Enum.KeyCode.S then md.B = 1
+                elseif K == Enum.KeyCode.A then md.L = 1
                 elseif K == Enum.KeyCode.D then md.R = 1
                 end
             end
@@ -244,8 +258,8 @@ ToggleBtn.MouseButton1Click:Connect(function()
             end
         end)
     else
-        ToggleBtn.Text = "OFF"
-        ToggleBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Kembali ke abu-abu
+        ToggleBtn.Text = "Fly: OFF"
+        ToggleBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
         FLYING = false
         if FlyDown then FlyDown:Disconnect() end
         if FlyUp then FlyUp:Disconnect() end
