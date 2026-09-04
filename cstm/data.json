@@ -22,6 +22,10 @@
 
   "FreeScripts": [
     {
+      "ScriptName": "SA2 Test",
+      "ScriptURL": "https://raw.githubusercontent.com/Zami-X/test/refs/heads/main/sa2-test"
+    },
+    {
       "ScriptName": "SaZam Emote",
       "ScriptURL": "https://raw.githubusercontent.com/zdanx/mysc/refs/heads/main/cstm/SaZa%20Emote.lua"
     },
