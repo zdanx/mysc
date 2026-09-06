@@ -91,7 +91,7 @@ local function CreateTeleportUI()
     LogoButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
     LogoButton.Position = UDim2.new(1, -60, 0.5, -20)
     LogoButton.Size = UDim2.new(0, 40, 0, 40)
-    LogoButton.Image = "rbxassetid://0000000000" -- GANTI ANGKA INI DENGAN ASSET ID GAMBAR KAMU
+    LogoButton.Image = "rbxassetid://135997645901529" -- GANTI ANGKA INI DENGAN ASSET ID GAMBAR KAMU
     LogoButton.Visible = false
     LogoButton.Active = true
     LogoButton.Draggable = true
