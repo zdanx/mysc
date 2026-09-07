@@ -1,79 +1,78 @@
 {
-  "Users": [
-    "kecapmanisasin29",
-    "miekwetiau012",
-    "1dnzxz",
-    "Grizzlynnnnnnnnn",
-    "amzfly1",
-    "allieehn",
-    "intnfbrynt1",
-    "fersetia",
-    "Lexa4Red",
-    "KUCHAY15",
-    "Rifky9067",
-"aeroxkarbu2",
-"ZayvorPrime",
-"B2BxKENN",
-"Astaaa172",
-"moontitexx",
-"sulthanrf3",
-    "end"
-  ],
-
-  "FreeScripts": [
-    {
-      "ScriptName": "SaZam Emote",
-      "ScriptURL": "https://raw.githubusercontent.com/zdanx/mysc/refs/heads/main/cstm/SaZa%20Emote.lua"
-    },
-    {
-      "ScriptName": "Infinite Yield",
-      "ScriptURL": "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"
-    },
-    {
-      "ScriptName": "Cryptic",
-      "ScriptURL": "https://raw.githubusercontent.com/OnlyCryptic/Cryptic/main/main.lua"
-    },
-    {
-      "ScriptName": "Flames Hub",
-      "ScriptURL": "https://raw.githubusercontent.com/zdanx/mysc/refs/heads/main/fh.lua"
-    },
-    {
-      "ScriptName": "Chat",
-      "ScriptURL": "https://pastefy.app/108vjy8A/raw"
+    "Users": [
+        "kecapmanisasin29",
+        "miekwetiau012",
+        "1dnzxz",
+        "Grizzlynnnnnnnnn",
+        "amzfly1",
+        "allieehn",
+        "intnfbrynt1",
+        "fersetia",
+        "Lexa4Red",
+        "KUCHAY15",
+        "Rifky9067",
+        "aeroxkarbu2",
+        "ZayvorPrime",
+        "B2BxKENN",
+        "Astaaa172",
+        "moontitexx",
+        "sulthanrf3",
+        "tes123CEK",
+        "end"
+    ],
+    "FreeScripts": [
+        {
+            "ScriptName": "SaZam Emote",
+            "ScriptURL": "https:\/\/raw.githubusercontent.com\/zdanx\/mysc\/refs\/heads\/main\/cstm\/SaZa%20Emote.lua"
+        },
+        {
+            "ScriptName": "Infinite Yield",
+            "ScriptURL": "https:\/\/raw.githubusercontent.com\/EdgeIY\/infiniteyield\/master\/source"
+        },
+        {
+            "ScriptName": "Cryptic",
+            "ScriptURL": "https:\/\/raw.githubusercontent.com\/OnlyCryptic\/Cryptic\/main\/main.lua"
+        },
+        {
+            "ScriptName": "Flames Hub",
+            "ScriptURL": "https:\/\/raw.githubusercontent.com\/zdanx\/mysc\/refs\/heads\/main\/fh.lua"
+        },
+        {
+            "ScriptName": "Chat",
+            "ScriptURL": "https:\/\/pastefy.app\/108vjy8A\/raw"
+        }
+    ],
+    "VIPScripts": {
+        "1dnzxz": [
+            {
+                "Password": "2077sapp",
+                "ScriptName": "Infinite Yield",
+                "ScriptURL": "https:\/\/raw.githubusercontent.com\/EdgeIY\/infiniteyield\/master\/source"
+            },
+            {
+                "Password": "2077sapp",
+                "ScriptName": "Siexther",
+                "ScriptURL": "https:\/\/www.siexther.online\/loader"
+            }
+        ],
+        "Lexa4Red": [
+            {
+                "Password": "2077sapp",
+                "ScriptName": "Siexther",
+                "ScriptURL": "https:\/\/www.siexther.online\/loader"
+            }
+        ],
+        "intnfbrynt1": [
+            {
+                "Password": "sazam1",
+                "ScriptName": "Siexther",
+                "ScriptURL": "https:\/\/www.siexther.online\/loader"
+            }
+        ],
+        "miekwetiau012": {
+            "Password": "2077sapp",
+            "ScriptName": "Infinite Yield",
+            "ScriptURL": "https:\/\/raw.githubusercontent.com\/EdgeIY\/infiniteyield\/master\/source"
+        }
     }
-  ],
-
-  "VIPScripts": {
-    "1dnzxz": [
-      {
-        "Password": "2077sapp",
-        "ScriptName": "Infinite Yield",
-        "ScriptURL": "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"
-      },
-      {
-        "Password": "2077sapp",
-        "ScriptName": "Siexther",
-        "ScriptURL": "https://www.siexther.online/loader"
-      }
-    ],
-    "Lexa4Red": [
-      {
-        "Password": "2077sapp",
-        "ScriptName": "Siexther",
-        "ScriptURL": "https://www.siexther.online/loader"
-      }
-    ],
-    "intnfbrynt1": [
-      {
-        "Password": "sazam1",
-        "ScriptName": "Siexther",
-        "ScriptURL": "https://www.siexther.online/loader"
-      }
-    ],
-    "miekwetiau012": {
-      "Password": "2077sapp",
-      "ScriptName": "Infinite Yield",
-      "ScriptURL": "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"
-    }
-  }
 }
