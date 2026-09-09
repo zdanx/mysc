@@ -27,5 +27,5 @@ task.spawn(function()
 
     -- Mengubah posisi ke Ujung Kanan Atas (Margin 20px dari tepi)
     button.AnchorPoint = Vector2.new(1, 0)
-    button.Position = UDim2.new(1, -20, 0, 20)
+    button.Position = UDim2.new(1, -10, 0, 10)
 end)
