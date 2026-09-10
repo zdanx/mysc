@@ -1,27 +1,93 @@
 {
     "Users": [
-        "kecapmanisasin29",
-        "miekwetiau012TES",
-        "1dnzxz",
-        "Grizzlynnnnnnnnn",
-        "allieehn",
-        "intnfbrynt1",
-        "fersetia",
-        "Lexa4Red",
-        "KUCHAY15",
-        "Rifky9067",
-        "aeroxkarbu2",
-        "ZayvorPrime",
-        "B2BxKENN",
-        "Astaaa172",
-        "moontitexx",
-        "sulthanrf3",
-        "makefun71",
-        "Orser7",
-        "leoozard999",
-        "moch_eeza",
-        "sita19975",
-        "diego_54876",
+        {
+            "username": "kecapmanisasin29",
+            "owner": "Ajil"
+        },
+        {
+            "username": "miekwetiau012TES",
+            "owner": "-"
+        },
+        {
+            "username": "1dnzxz",
+            "owner": "-"
+        },
+        {
+            "username": "Grizzlynnnnnnnnn",
+            "owner": "-"
+        },
+        {
+            "username": "allieehn",
+            "owner": "-"
+        },
+        {
+            "username": "intnfbrynt1",
+            "owner": "-"
+        },
+        {
+            "username": "fersetia",
+            "owner": "-"
+        },
+        {
+            "username": "Lexa4Red",
+            "owner": "-"
+        },
+        {
+            "username": "KUCHAY15",
+            "owner": "-"
+        },
+        {
+            "username": "Rifky9067",
+            "owner": "-"
+        },
+        {
+            "username": "aeroxkarbu2",
+            "owner": "-"
+        },
+        {
+            "username": "ZayvorPrime",
+            "owner": "-"
+        },
+        {
+            "username": "B2BxKENN",
+            "owner": "-"
+        },
+        {
+            "username": "Astaaa172",
+            "owner": "-"
+        },
+        {
+            "username": "moontitexx",
+            "owner": "-"
+        },
+        {
+            "username": "sulthanrf3",
+            "owner": "-"
+        },
+        {
+            "username": "makefun71",
+            "owner": "-"
+        },
+        {
+            "username": "Orser7",
+            "owner": "-"
+        },
+        {
+            "username": "leoozard999",
+            "owner": "-"
+        },
+        {
+            "username": "moch_eeza",
+            "owner": "-"
+        },
+        {
+            "username": "sita19975",
+            "owner": "-"
+        },
+        {
+            "username": "diego_54876",
+            "owner": "-"
+        },
         "end"
     ]
 }
